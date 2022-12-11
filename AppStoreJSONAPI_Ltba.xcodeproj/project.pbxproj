@@ -24,6 +24,8 @@
 		74EF94B62943A9AA0026A129 /* VerticalStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EF94B52943A9AA0026A129 /* VerticalStackView.swift */; };
 		74EF94B92943C2B70026A129 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EF94B82943C2B70026A129 /* SearchResult.swift */; };
 		74EF94BD2944724B0026A129 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EF94BC2944724B0026A129 /* Service.swift */; };
+		74FD39B829464C5000FF3C7E /* AppRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FD39B729464C5000FF3C7E /* AppRowCell.swift */; };
+		74FD39BA29464D3E00FF3C7E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FD39B929464D3E00FF3C7E /* Extensions.swift */; };
 		B3AD424EB8702981429BE3E5 /* Pods_AppStoreJSONAPI_Ltba.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9134C5CB2DCFD82BE6477870 /* Pods_AppStoreJSONAPI_Ltba.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +50,8 @@
 		74EF94B52943A9AA0026A129 /* VerticalStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalStackView.swift; sourceTree = "<group>"; };
 		74EF94B82943C2B70026A129 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		74EF94BC2944724B0026A129 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		74FD39B729464C5000FF3C7E /* AppRowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRowCell.swift; sourceTree = "<group>"; };
+		74FD39B929464D3E00FF3C7E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9134C5CB2DCFD82BE6477870 /* Pods_AppStoreJSONAPI_Ltba.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppStoreJSONAPI_Ltba.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B18E67CA05DC819D6E842CC0 /* Pods-AppStoreJSONAPI_Ltba.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppStoreJSONAPI_Ltba.debug.xcconfig"; path = "Target Support Files/Pods-AppStoreJSONAPI_Ltba/Pods-AppStoreJSONAPI_Ltba.debug.xcconfig"; sourceTree = "<group>"; };
 		FAD02BFE190B4699679F3298 /* Pods-AppStoreJSONAPI_Ltba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppStoreJSONAPI_Ltba.release.xcconfig"; path = "Target Support Files/Pods-AppStoreJSONAPI_Ltba/Pods-AppStoreJSONAPI_Ltba.release.xcconfig"; sourceTree = "<group>"; };
@@ -68,6 +72,7 @@
 		7474048A2944FD4A0082ED9A /* Apps */ = {
 			isa = PBXGroup;
 			children = (
+				7474049329450E310082ED9A /* AppsHorizontalController.swift */,
 				7474048B2944FD590082ED9A /* AppsController.swift */,
 			);
 			path = Apps;
@@ -85,7 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				74740491294501AD0082ED9A /* AppsGroupCell.swift */,
-				7474049329450E310082ED9A /* AppsHorizontalController.swift */,
+				74FD39B729464C5000FF3C7E /* AppRowCell.swift */,
 			);
 			path = Apps;
 			sourceTree = "<group>";
@@ -153,6 +158,7 @@
 			children = (
 				74EF94B32943A3BB0026A129 /* UIView+Layout.swift */,
 				74EF94B52943A9AA0026A129 /* VerticalStackView.swift */,
+				74FD39B929464D3E00FF3C7E /* Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -316,9 +322,11 @@
 				74EF94B62943A9AA0026A129 /* VerticalStackView.swift in Sources */,
 				74EF94BD2944724B0026A129 /* Service.swift in Sources */,
 				74EF94B42943A3BB0026A129 /* UIView+Layout.swift in Sources */,
+				74FD39BA29464D3E00FF3C7E /* Extensions.swift in Sources */,
 				7474048E2944FED30082ED9A /* BaseListController.swift in Sources */,
 				74EF94992941E7900026A129 /* SceneDelegate.swift in Sources */,
 				7474049429450E310082ED9A /* AppsHorizontalController.swift in Sources */,
+				74FD39B829464C5000FF3C7E /* AppRowCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
