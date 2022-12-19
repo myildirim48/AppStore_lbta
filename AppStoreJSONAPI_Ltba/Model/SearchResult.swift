@@ -17,5 +17,9 @@ struct Result: Decodable {
     let averageUserRating: Float?
     let artworkUrl100: String //App icon
     let screenshotUrls: [String]
+    let formattedPrice: String
+    let description: String
+    let releaseNotes: String
+    
     
 }

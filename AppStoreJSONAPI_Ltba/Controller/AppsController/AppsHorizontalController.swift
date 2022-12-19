@@ -6,10 +6,12 @@
 //
 
 import UIKit
-class AppsHorizontalController: BaseListController,UICollectionViewDelegateFlowLayout {
+class AppsHorizontalController: HorizontalSnappingController,UICollectionViewDelegateFlowLayout {
     
     let cellID = "cellId"
     var appGroup: AppGroup?
+    
+    var didSelectHandler: ((FeedResult) -> ())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,9 +20,14 @@ class AppsHorizontalController: BaseListController,UICollectionViewDelegateFlowL
         
         collectionView.register(AppRowCell.self, forCellWithReuseIdentifier: cellID)
         
-        if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = .horizontal
+        collectionView.contentInset = .init(top: 0, left: 16, bottom: 0, right: 16)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let app = appGroup?.feed.results[indexPath.item] {
+            didSelectHandler?(app)
         }
+        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -50,7 +57,7 @@ class AppsHorizontalController: BaseListController,UICollectionViewDelegateFlowL
         return lineSpacing
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: topBottomPadding, left: 16, bottom: topBottomPadding, right: 16)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        return .init(top: topBottomPadding, left: 16, bottom: topBottomPadding, right: 16)
+//    }
 }
