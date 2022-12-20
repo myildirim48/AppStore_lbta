@@ -16,11 +16,11 @@ class Service {
 
       fetchGenericJSONData(urlString: urlString, completion: completion)
     }
-    
-    func fetchBooks(completion: @escaping(AppGroup?,Error?) -> ()) {
-         let urlBook = "https://rss.applemarketingtools.com/api/v2/tr/books/top-free/50/books.json"
-        fetchGroupData(urlString: urlBook, completion: completion)
-    }
+//    
+//    func fetchBooks(completion: @escaping(AppGroup?,Error?) -> ()) {
+//         let urlBook = "https://rss.applemarketingtools.com/api/v2/us/music/most-played/50/albums.json"
+//        fetchGroupData(urlString: urlBook, completion: completion)
+//    }
     
     func fetchApps(completion: @escaping(AppGroup?,Error?) -> ()) {
          let urlBook = "https://rss.applemarketingtools.com/api/v2/tr/apps/top-free/50/apps.json"

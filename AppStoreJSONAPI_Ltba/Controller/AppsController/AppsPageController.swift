@@ -41,19 +41,12 @@ class AppsPageController: BaseListController,UICollectionViewDelegateFlowLayout 
     
     fileprivate func fetchData() {
         
-        var group1: AppGroup?
+        
         var group2: AppGroup?
         var group3: AppGroup?
         
         //Help you sync your data fetches together
         let dispatchGroup = DispatchGroup()
-        
-        
-        dispatchGroup.enter()
-            Service.shared.fetchBooks { appGroup, err in
-        dispatchGroup.leave()
-                group1 = appGroup
-        }
         
         dispatchGroup.enter()
             Service.shared.fetchAppsPaid { appGroup, err in
@@ -86,10 +79,7 @@ class AppsPageController: BaseListController,UICollectionViewDelegateFlowLayout 
             print("Completed your dispatch group tasks... ")
             
             self.activityIndicatorView.stopAnimating()
-            
-            if let group = group1 {
-                self.groups.append(group)
-            }
+    
             if let group = group2 {
                 self.groups.append(group)
             }
