@@ -8,16 +8,26 @@ import UIKit
 
 class TodayController: BaseListController, UICollectionViewDelegateFlowLayout {
     
-//    fileprivate let cellId = "cellId"
-//    fileprivate let multipleAppCellID = "multipleAppCellID"
+    //    fileprivate let cellId = "cellId"
+    //    fileprivate let multipleAppCellID = "multipleAppCellID"
     
-    let items = [
-        TodayItem.init(category: "LIFE HACK", title: "Utilizing your Time", image: UIImage(named: "garden")!, description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white,cellType: .single),
-        TodayItem.init(category: "HOLIDAYS", title: "Travel on a Budget", image: UIImage(named: "holiday")!, description: "Find out all you need to know on how to travel without packing everything!", backgroundColor: UIColor(red: 1, green: 0.9765, blue: 0.6667, alpha: 1.0),cellType: .single),
-        TodayItem.init(category: "THE DAILY LIST", title: "Test-Drive These CarPlay Apps", image: UIImage(named: "garden")!, description: "", backgroundColor: .white,cellType: .multiple)]
+    let activityIndicatorView: UIActivityIndicatorView = {
+        let aiv = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
+        aiv.color = .systemGray4
+        aiv.startAnimating()
+        aiv.hidesWhenStopped = true
+        return aiv
+    }()
+    
+    var items = [TodayItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.fillSuperview()
+        
+        fetchData()
         
         navigationController?.isNavigationBarHidden = true
         
@@ -25,6 +35,55 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout {
         
         collectionView.register(TodayCell.self,  forCellWithReuseIdentifier: TodayItem.CellType.single.rawValue)
         collectionView.register(TodayMultipleAppCell.self, forCellWithReuseIdentifier: TodayItem.CellType.multiple.rawValue)
+        
+        
+    }
+    
+    fileprivate func fetchData() {
+        //Dispatch group
+        let dispatchGroup = DispatchGroup()
+        var appsPaid: AppGroup?
+        var appsFree: AppGroup?
+        
+        dispatchGroup.enter()
+        Service.shared.fetchAppsPaid{ appGroup, err in
+            if let err = err {
+                print("Error while fetching data at TodayController",err)
+                return
+            }
+            
+            appsPaid = appGroup
+            
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        Service.shared.fetchApps { appGroup, err in
+            if let err = err {
+                print("Error while fetching data at TodayController",err)
+                return
+            }
+            
+            appsFree = appGroup
+            
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            
+            print("Finished fetching at TodayController")
+            
+            
+            
+            self.items = [
+                TodayItem.init(category: "Daily List", title: appsPaid?.feed.title ?? "", image: #imageLiteral(resourceName: "garden"), description: "", backgroundColor: .white,cellType: .multiple, apps: appsPaid?.feed.results ?? []),
+                TodayItem.init(category: "Daily List", title: appsFree?.feed.title ?? "",image: #imageLiteral(resourceName: "garden"), description: "", backgroundColor: .white, cellType: .multiple, apps: appsFree?.feed.results ?? []),
+                TodayItem.init(category: "HOLIDAYS", title: "Travel on a Budget", image: UIImage(named: "holiday")!, description: "Find out all you need to know on how to travel without packing everything!", backgroundColor: UIColor(red: 1, green: 0.9765, blue: 0.6667, alpha: 1.0),cellType: .single, apps: [])]
+            
+            self.activityIndicatorView.stopAnimating()
+            self.collectionView.reloadData()
+        }
+        
     }
     
     var appFullscreenController: AppFullScreenController!
@@ -35,6 +94,14 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout {
     var heightConstraint: NSLayoutConstraint?
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if items[indexPath.item].cellType == .multiple {
+            let fullController =  TodayMultipleAppsController(mode: .fullscreen)
+            fullController.results = self.items[indexPath.item].apps
+            fullController.modalPresentationStyle = .fullScreen
+            present(fullController, animated: true)
+            return
+        }
         
         let appFullscreenController = AppFullScreenController()
         appFullscreenController.todayItem = items[indexPath.row]
@@ -55,10 +122,10 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout {
         
         //absolute coordinates of cell
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
-
+        
         self.startingFrame = startingFrame
         
-//        Auto layout constraint animations
+        //        Auto layout constraint animations
         
         fullscreenView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -74,7 +141,7 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout {
         
         //Animation from cell to fullscreen
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7, options: .curveEaseOut, animations: {
-
+            
             self.topConstraint?.constant = 0
             self.leadingConstraint?.constant = 0
             self.widthConstraint?.constant = self.view.frame.width
@@ -82,16 +149,16 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout {
             
             self.view.layoutIfNeeded() // starts animation
             
-//            self.tabBarController?.tabBar.transform = CGAffineTransform(translationX: 0, y: 100)
+            //            self.tabBarController?.tabBar.transform = CGAffineTransform(translationX: 0, y: 100)
             self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
-
+            
             guard let cell = self.appFullscreenController.tableView.cellForRow(at: [0, 0]) as? AppFullscreenHeaderCell else { return }
             
             cell.todayCell.topConstraint.constant = 48
             cell.layoutIfNeeded()
-
+            
         }, completion: nil)
-
+        
     }
     
     var startingFrame: CGRect?
@@ -114,7 +181,7 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout {
             guard let cell = self.appFullscreenController.tableView.cellForRow(at: [0,0]) as? AppFullscreenHeaderCell else { return }
             cell.todayCell.topConstraint.constant = 24
             cell.layoutIfNeeded()
-         
+            
         }, completion: { _ in
             self.appFullscreenController.view.removeFromSuperview()
             self.appFullscreenController.removeFromParent()
@@ -126,7 +193,7 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-   
+        
         let cellId = items[indexPath.item].cellType.rawValue
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! BaseTodayCell
         cell.todayItem = items[indexPath.item]
