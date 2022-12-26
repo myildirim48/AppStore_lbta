@@ -10,7 +10,7 @@ class TodayMultipleAppsController: BaseListController,UICollectionViewDelegateFl
     
     let cellId = "cellId"
     
-    var results = [FeedResult]()
+    var apps = [FeedResult]()
     
     let closeButtonn: UIButton = {
         let button = UIButton()
@@ -29,8 +29,8 @@ class TodayMultipleAppsController: BaseListController,UICollectionViewDelegateFl
         
         if mode == .fullscreen {
             closeButtonn.addTarget(self, action: #selector(handleDismissMultipleApp), for: .touchUpInside)
-            
             setupCloseButton()
+            navigationController?.isNavigationBarHidden = true
         }else {
             collectionView.isScrollEnabled = false
         }
@@ -46,6 +46,12 @@ class TodayMultipleAppsController: BaseListController,UICollectionViewDelegateFl
         closeButtonn.anchor(top: view.topAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor,padding: .init(top: 20, left: 0, bottom: 0, right:16),size: .init(width: 44, height: 44))
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let appId = apps[indexPath.item].id
+        let appDetailController = AppDetailController(appId: appId)
+        navigationController?.pushViewController(appDetailController, animated: true)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if mode == .fullscreen {
             return .init(top: 12, left: 24, bottom: 12, right: 24)
@@ -56,14 +62,14 @@ class TodayMultipleAppsController: BaseListController,UICollectionViewDelegateFl
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if mode == .fullscreen {
-            return results.count
+            return apps.count
         }
-        return min(4, results.count)
+        return min(4, apps.count)
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MultipleAppCell
-        cell.app = self.results[indexPath.item]
+        cell.app = self.apps[indexPath.item]
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
