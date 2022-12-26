@@ -30,6 +30,7 @@ class TodayMultipleAppCell: BaseTodayCell {
         
         backgroundColor = .white
         layer.cornerRadius = 16
+
                 
         let stackView = VerticalStackView(arrangedSubviews: [
             categoryLabel,

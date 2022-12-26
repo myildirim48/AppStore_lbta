@@ -32,14 +32,14 @@ class TodayCell: BaseTodayCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        clipsToBounds = true
+//        clipsToBounds = true
         layer.cornerRadius = 16
         
         imageView.contentMode = .scaleAspectFill
         let imageViewContainer = UIView()
         imageViewContainer.addSubview(imageView)
         imageView.centerInSuperview(size:.init(width: 240, height: 240))
-        
+        imageView.clipsToBounds = true
         
         let stackView = VerticalStackView(arrangedSubviews: [
         categoryLabel,titleLabel,imageViewContainer,descriptionLabel],spacing: 8)

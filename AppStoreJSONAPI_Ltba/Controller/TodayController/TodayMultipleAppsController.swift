@@ -74,7 +74,7 @@ class TodayMultipleAppsController: BaseListController,UICollectionViewDelegateFl
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let height: CGFloat = 68
+        let height: CGFloat = 80
         if mode == .fullscreen {
             return .init(width: view.frame.width-48, height: height)
         }
