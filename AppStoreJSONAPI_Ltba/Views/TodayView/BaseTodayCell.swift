@@ -11,7 +11,7 @@ class BaseTodayCell: UICollectionViewCell {
     
     override var isHighlighted: Bool {
         didSet{
-            var transfrom: CGAffineTransform = .identity
+            let transfrom: CGAffineTransform = .identity
             
             if isHighlighted {
                     transform = .init(scaleX: 0.9, y: 0.9)
