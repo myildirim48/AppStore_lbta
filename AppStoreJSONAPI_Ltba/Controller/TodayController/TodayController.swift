@@ -88,6 +88,8 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout,UI
             
             
             self.items = [
+                
+                TodayItem.init(category: "Daily List", title: appsPaid?.feed.title ?? "", image: #imageLiteral(resourceName: "garden"), description: "This is a special tree like in avatar.", backgroundColor: .white,cellType: .single, apps: appsPaid?.feed.results ?? []),
                 TodayItem.init(category: "Daily List", title: appsPaid?.feed.title ?? "", image: #imageLiteral(resourceName: "garden"), description: "", backgroundColor: .white,cellType: .multiple, apps: appsPaid?.feed.results ?? []),
                 TodayItem.init(category: "Daily List", title: appsFree?.feed.title ?? "",image: #imageLiteral(resourceName: "garden"), description: "", backgroundColor: .white, cellType: .multiple, apps: appsFree?.feed.results ?? []),
                 TodayItem.init(category: "HOLIDAYS", title: "Travel on a Budget", image: UIImage(named: "holiday")!, description: "Find out all you need to know on how to travel without packing everything!", backgroundColor: UIColor(red: 1, green: 0.9765, blue: 0.6667, alpha: 1.0),cellType: .single, apps: [])]
@@ -139,18 +141,35 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout,UI
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
+    var appFullscreenBeginOffset: CGFloat = 0
     
     @objc fileprivate func handleDrag(gesture: UIPanGestureRecognizer) {
+        if gesture.state == .began {
+            appFullscreenBeginOffset = appFullscreenController.tableView.contentOffset.y
+        }
+        
+        if appFullscreenController.tableView.contentOffset.y > 0{
+            return
+        }
+        
         let translationY = gesture.translation(in: appFullscreenController.view).y
-       
         if gesture.state == .changed {
-            let scale = 1 - translationY / 1000
-            
-            let transform: CGAffineTransform = .init(scaleX: scale, y: 0.5)
-            self.appFullscreenController.view.transform = transform
+            if translationY > 0 {
+                let trueOffset = translationY - appFullscreenBeginOffset
+                
+                var scale = 1 - translationY / 1000
+                
+                scale = min(1,scale)
+                scale = max(0.5, scale)
+                
+                let transform: CGAffineTransform = .init(scaleX: scale, y: 0.5)
+                self.appFullscreenController.view.transform = transform
+            }
             
         }else if gesture.state == .ended {
-            handleAppFullscreenDismissal()
+            if translationY > 0 {
+                handleAppFullscreenDismissal()
+            }
         }
     }
     
@@ -240,6 +259,9 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout,UI
             self.tabBarController?.tabBar.transform = .identity
             
             guard let cell = self.appFullscreenController.tableView.cellForRow(at: [0,0]) as? AppFullscreenHeaderCell else { return }
+            
+//            cell.closeButton.alpha = 0
+            self.appFullscreenController.closeButton.alpha = 0
             cell.todayCell.topConstraint.constant = 24
             cell.layoutIfNeeded()
             
