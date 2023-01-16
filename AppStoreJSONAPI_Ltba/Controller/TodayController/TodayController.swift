@@ -155,7 +155,7 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout,UI
         let translationY = gesture.translation(in: appFullscreenController.view).y
         if gesture.state == .changed {
             if translationY > 0 {
-                let trueOffset = translationY - appFullscreenBeginOffset
+//                let trueOffset = translationY - appFullscreenBeginOffset
                 
                 var scale = 1 - translationY / 1000
                 
