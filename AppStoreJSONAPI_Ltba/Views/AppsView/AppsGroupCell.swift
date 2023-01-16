@@ -23,6 +23,7 @@ class AppsGroupCell: UICollectionViewCell {
         
         addSubview(horizontalController.view)
         horizontalController.view.anchor(top: titleLabel.bottomAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor)
+        
     }
     
     required init?(coder: NSCoder) {
